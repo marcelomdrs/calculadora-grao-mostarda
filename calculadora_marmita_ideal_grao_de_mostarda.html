@@ -1,0 +1,209 @@
+
+<h2 class="sr-only">Calculadora de marmita ideal da Grão de Mostarda — descubra qual prato combina com seu objetivo e perfil</h2>
+<style>
+.w{padding:1rem 0}
+.step{background:var(--surface-2);border:0.5px solid var(--border);border-radius:12px;padding:1.25rem;margin-bottom:12px}
+.step-title{font-size:13px;font-weight:500;color:var(--text-secondary);text-transform:uppercase;letter-spacing:.05em;margin-bottom:12px}
+.opts{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:8px}
+.opt{background:var(--surface-1);border:0.5px solid var(--border);border-radius:var(--radius);padding:.75rem 1rem;cursor:pointer;text-align:center;transition:border-color .15s}
+.opt:hover{border-color:var(--border-strong)}
+.opt.sel{border:1.5px solid #534AB7;background:#EEEDFE}
+.opt-icon{font-size:20px;margin-bottom:6px;color:var(--text-secondary)}
+.opt.sel .opt-icon{color:#534AB7}
+.opt-label{font-size:13px;font-weight:500;color:var(--text-primary)}
+.opt-sub{font-size:11px;color:var(--text-secondary);margin-top:2px}
+.calc-btn{width:100%;padding:.75rem;border-radius:var(--radius);border:0.5px solid var(--border-strong);background:transparent;color:var(--text-primary);font-size:14px;font-weight:500;cursor:pointer;margin-top:4px}
+.calc-btn:hover{background:var(--surface-1)}
+.result{background:var(--surface-2);border:0.5px solid var(--border);border-radius:12px;padding:1.25rem;margin-top:12px;display:none}
+.result.show{display:block}
+.res-tag{font-size:11px;font-weight:500;text-transform:uppercase;letter-spacing:.05em;padding:3px 10px;border-radius:var(--radius);display:inline-block;margin-bottom:10px}
+.res-title{font-size:18px;font-weight:500;color:var(--text-primary);margin-bottom:4px}
+.res-sub{font-size:13px;color:var(--text-secondary);margin-bottom:14px}
+.macros{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:14px}
+.mac{border-radius:var(--radius);padding:8px;text-align:center}
+.mac-l{font-size:10px;font-weight:500;text-transform:uppercase;letter-spacing:.04em;margin-bottom:3px}
+.mac-v{font-size:16px;font-weight:500}
+.pratos-list{display:grid;gap:8px}
+.prato-card{background:var(--surface-1);border:0.5px solid var(--border);border-radius:var(--radius);padding:.75rem 1rem;display:flex;align-items:center;justify-content:space-between;gap:10px}
+.prato-name{font-size:13px;font-weight:500;color:var(--text-primary)}
+.prato-kcal{font-size:12px;color:var(--text-secondary)}
+.badge{font-size:11px;padding:2px 10px;border-radius:var(--radius)}
+.wpp-btn{width:100%;padding:.75rem;border-radius:var(--radius);border:0.5px solid #0F6E56;background:#E1F5EE;color:#085041;font-size:14px;font-weight:500;cursor:pointer;margin-top:14px;display:flex;align-items:center;justify-content:center;gap:8px}
+.wpp-btn:hover{background:#9FE1CB}
+</style>
+
+<div class="w">
+
+  <div class="step">
+    <div class="step-title"><i class="ti ti-target" style="font-size:13px;vertical-align:-1px;margin-right:4px" aria-hidden="true"></i>Qual é o seu objetivo?</div>
+    <div class="opts" id="obj-opts">
+      <div class="opt" onclick="sel('obj','emagrecer',this)">
+        <div class="opt-icon"><i class="ti ti-arrow-down-circle" aria-hidden="true"></i></div>
+        <div class="opt-label">Emagrecer</div>
+        <div class="opt-sub">Déficit calórico</div>
+      </div>
+      <div class="opt" onclick="sel('obj','manter',this)">
+        <div class="opt-icon"><i class="ti ti-equal" aria-hidden="true"></i></div>
+        <div class="opt-label">Manter peso</div>
+        <div class="opt-sub">Equilíbrio</div>
+      </div>
+      <div class="opt" onclick="sel('obj','massa',this)">
+        <div class="opt-icon"><i class="ti ti-arrow-up-circle" aria-hidden="true"></i></div>
+        <div class="opt-label">Ganhar massa</div>
+        <div class="opt-sub">Superávit calórico</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-title"><i class="ti ti-run" style="font-size:13px;vertical-align:-1px;margin-right:4px" aria-hidden="true"></i>Qual é o seu nível de atividade?</div>
+    <div class="opts" id="atv-opts">
+      <div class="opt" onclick="sel('atv','sedentario',this)">
+        <div class="opt-icon"><i class="ti ti-sofa" aria-hidden="true"></i></div>
+        <div class="opt-label">Sedentário</div>
+        <div class="opt-sub">Pouco ou nenhum exercício</div>
+      </div>
+      <div class="opt" onclick="sel('atv','moderado',this)">
+        <div class="opt-icon"><i class="ti ti-walk" aria-hidden="true"></i></div>
+        <div class="opt-label">Moderado</div>
+        <div class="opt-sub">2 a 4x por semana</div>
+      </div>
+      <div class="opt" onclick="sel('atv','ativo',this)">
+        <div class="opt-icon"><i class="ti ti-barbell" aria-hidden="true"></i></div>
+        <div class="opt-label">Muito ativo</div>
+        <div class="opt-sub">5x ou mais por semana</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-title"><i class="ti ti-heart" style="font-size:13px;vertical-align:-1px;margin-right:4px" aria-hidden="true"></i>Alguma preferência alimentar?</div>
+    <div class="opts" id="pref-opts">
+      <div class="opt" onclick="sel('pref','tudo',this)">
+        <div class="opt-icon"><i class="ti ti-circle-check" aria-hidden="true"></i></div>
+        <div class="opt-label">Sem restrição</div>
+        <div class="opt-sub">Como de tudo</div>
+      </div>
+      <div class="opt" onclick="sel('pref','sempeixe',this)">
+        <div class="opt-icon"><i class="ti ti-fish" aria-hidden="true"></i></div>
+        <div class="opt-label">Prefiro peixe</div>
+        <div class="opt-sub">Proteína leve</div>
+      </div>
+      <div class="opt" onclick="sel('pref','semcarne',this)">
+        <div class="opt-icon"><i class="ti ti-leaf" aria-hidden="true"></i></div>
+        <div class="opt-label">Sem carne vermelha</div>
+        <div class="opt-sub">Frango ou peixe</div>
+      </div>
+    </div>
+  </div>
+
+  <button class="calc-btn" onclick="calcular()"><i class="ti ti-sparkles" style="font-size:15px;vertical-align:-2px;margin-right:6px" aria-hidden="true"></i>Descobrir minha marmita ideal</button>
+
+  <div class="result" id="result"></div>
+</div>
+
+<script>
+const estado = {obj:null, atv:null, pref:null};
+
+function sel(tipo, val, el) {
+  estado[tipo] = val;
+  document.querySelectorAll(`#${tipo}-opts .opt`).forEach(o => o.classList.remove('sel'));
+  el.classList.add('sel');
+}
+
+const pratos = [
+  {nome:'Filé de Peixe com Ervas', cat:'peixe', obj:['emagrecer','manter'], atv:['sedentario','moderado','ativo'], kcal:370, prot:34, carb:32, gord:9},
+  {nome:'Salmão no Molho de Maracujá', cat:'peixe', obj:['manter','massa'], atv:['moderado','ativo'], kcal:420, prot:38, carb:28, gord:14},
+  {nome:'Moqueca de Peixe', cat:'peixe', obj:['manter','massa'], atv:['ativo'], kcal:430, prot:32, carb:35, gord:16},
+  {nome:'Frango com Ervas', cat:'frango', obj:['emagrecer','manter'], atv:['sedentario','moderado','ativo'], kcal:390, prot:40, carb:28, gord:9},
+  {nome:'Frango Xadrez', cat:'frango', obj:['manter','massa'], atv:['moderado','ativo'], kcal:400, prot:36, carb:34, gord:10},
+  {nome:'Fricassé de Frango', cat:'frango', obj:['massa'], atv:['ativo'], kcal:440, prot:38, carb:36, gord:12},
+  {nome:'Arrumadinho de Carne de Sol', cat:'bovina', obj:['manter','massa'], atv:['moderado','ativo'], kcal:480, prot:35, carb:42, gord:16},
+  {nome:'Estrogonofe de Carne', cat:'bovina', obj:['massa'], atv:['ativo'], kcal:460, prot:34, carb:38, gord:14},
+  {nome:'Macarrão Integral à Bolonhesa', cat:'bovina', obj:['manter','massa'], atv:['moderado','ativo'], kcal:470, prot:32, carb:52, gord:12},
+  {nome:'Filé Suíno no Barbecue', cat:'suino', obj:['manter','massa'], atv:['moderado','ativo'], kcal:430, prot:36, carb:30, gord:14},
+  {nome:'Suíno no Molho de Ervas', cat:'suino', obj:['manter'], atv:['sedentario','moderado'], kcal:420, prot:35, carb:30, gord:14},
+  {nome:'Filé Suíno com Pimentões', cat:'suino', obj:['emagrecer','manter'], atv:['moderado','ativo'], kcal:410, prot:34, carb:28, gord:13},
+];
+
+const catColors = {
+  peixe: {bg:'#E1F5EE', txt:'#085041', label:'Peixe'},
+  frango: {bg:'#EEEDFE', txt:'#3C3489', label:'Frango'},
+  bovina: {bg:'#FAECE7', txt:'#712B13', label:'Carne bovina'},
+  suino: {bg:'#FAEEDA', txt:'#633806', label:'Suíno'},
+};
+
+const objConfig = {
+  emagrecer: {kcal:[350,430], label:'Deficit calórico — até 430 kcal', cor:'#E1F5EE', txt:'#085041', macrotag:'Alta proteína, baixo carb'},
+  manter: {kcal:[390,460], label:'Equilíbrio — entre 390 e 460 kcal', cor:'#EEEDFE', txt:'#3C3489', macrotag:'Macros equilibrados'},
+  massa: {kcal:[430,500], label:'Superávit — acima de 430 kcal', cor:'#FAEEDA', txt:'#633806', macrotag:'Alto carboidrato e proteína'},
+};
+
+function calcular() {
+  if (!estado.obj || !estado.atv || !estado.pref) {
+    alert('Selecione uma opção em cada etapa para continuar.');
+    return;
+  }
+
+  let filtrados = pratos.filter(p => {
+    const objOk = p.obj.includes(estado.obj);
+    const atvOk = p.atv.includes(estado.atv);
+    const prefOk = estado.pref === 'tudo' ? true
+      : estado.pref === 'sempeixe' ? p.cat === 'peixe'
+      : estado.pref === 'semcarne' ? p.cat !== 'bovina' && p.cat !== 'suino'
+      : true;
+    return objOk && atvOk && prefOk;
+  });
+
+  if (filtrados.length === 0) {
+    filtrados = pratos.filter(p => p.obj.includes(estado.obj)).slice(0,3);
+  }
+
+  filtrados = filtrados.slice(0,3);
+  const cfg = objConfig[estado.obj];
+  const avgKcal = Math.round(filtrados.reduce((a,p)=>a+p.kcal,0)/filtrados.length);
+  const avgProt = Math.round(filtrados.reduce((a,p)=>a+p.prot,0)/filtrados.length);
+  const avgCarb = Math.round(filtrados.reduce((a,p)=>a+p.carb,0)/filtrados.length);
+  const avgGord = Math.round(filtrados.reduce((a,p)=>a+p.gord,0)/filtrados.length);
+
+  const msg = encodeURIComponent(`Olá! Usei a calculadora da Grão de Mostarda e minha marmita ideal é: ${filtrados[0].nome}. Gostaria de saber o preço e fazer meu pedido!`);
+  const wppLink = `https://wa.me/5585999999999?text=${msg}`;
+
+  document.getElementById('result').innerHTML = `
+    <span class="res-tag" style="background:${cfg.cor};color:${cfg.txt}">${cfg.macrotag}</span>
+    <div class="res-title">Sua marmita ideal na Grão de Mostarda</div>
+    <div class="res-sub">${cfg.label}</div>
+    <div class="macros">
+      <div class="mac" style="background:#EEEDFE">
+        <div class="mac-l" style="color:#534AB7">Proteína</div>
+        <div class="mac-v" style="color:#3C3489">~${avgProt}g</div>
+      </div>
+      <div class="mac" style="background:#E1F5EE">
+        <div class="mac-l" style="color:#0F6E56">Carboidrato</div>
+        <div class="mac-v" style="color:#085041">~${avgCarb}g</div>
+      </div>
+      <div class="mac" style="background:#FAECE7">
+        <div class="mac-l" style="color:#993C1D">Gordura</div>
+        <div class="mac-v" style="color:#712B13">~${avgGord}g</div>
+      </div>
+    </div>
+    <div class="pratos-list">
+      ${filtrados.map((p,i) => {
+        const c = catColors[p.cat];
+        return `<div class="prato-card">
+          <div>
+            <div class="prato-name">${i===0?'<i class="ti ti-star" style="font-size:13px;color:#854F0B;margin-right:4px" aria-hidden="true"></i>':''}${p.nome}</div>
+            <div class="prato-kcal"><i class="ti ti-flame" style="font-size:12px;vertical-align:-1px" aria-hidden="true"></i> ${p.kcal} kcal · ${p.prot}g prot.</div>
+          </div>
+          <span class="badge" style="background:${c.bg};color:${c.txt}">${c.label}</span>
+        </div>`;
+      }).join('')}
+    </div>
+    <button class="wpp-btn" onclick="openLink('${wppLink}')">
+      <i class="ti ti-brand-whatsapp" style="font-size:18px" aria-hidden="true"></i>
+      Pedir essa marmita no WhatsApp
+    </button>
+  `;
+  document.getElementById('result').classList.add('show');
+}
+</script>
